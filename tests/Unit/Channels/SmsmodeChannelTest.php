@@ -24,7 +24,8 @@ class SmsmodeChannelTest extends TestCase
 
         $channel = new SmsmodeChannel(
             $client = Mockery::mock(HttpClientInterface::class),
-            '4444444444'
+            '4444444444',
+            'https://rest.smsmode.com/sms/v1'
         );
 
         $client->shouldReceive('request')
@@ -51,7 +52,8 @@ class SmsmodeChannelTest extends TestCase
 
         $channel = new SmsmodeChannel(
             $client = Mockery::mock(HttpClientInterface::class),
-            '4444444444'
+            '4444444444',
+            "https://rest.smsmode.com/sms/v1"
         );
 
         $message = $notification->toSmsmode($notifiable);
@@ -84,7 +86,8 @@ class SmsmodeChannelTest extends TestCase
 
         $channel = new SmsmodeChannel(
             $client = Mockery::mock(HttpClientInterface::class),
-            '4444444444'
+            '4444444444',
+            'https://rest.smsmode.com/sms/v1'
         );
 
         $message = $notification->toSmsmode($notifiable);
@@ -113,7 +116,8 @@ class SmsmodeChannelTest extends TestCase
 
         $channel = new SmsmodeChannel(
             $client = Mockery::mock(HttpClientInterface::class),
-            '4444444444'
+            '4444444444',
+            'https://rest.smsmode.com/sms/v1'
         );
 
         $message = $notification->toSmsmode($notifiable);
@@ -142,7 +146,8 @@ class SmsmodeChannelTest extends TestCase
 
         $channel = new SmsmodeChannel(
             $client = Mockery::mock(HttpClientInterface::class),
-            '4444444444'
+            '4444444444',
+            'https://rest.smsmode.com/sms/v1'
         );
 
         $message = $notification->toSmsmode($notifiable);
@@ -158,6 +163,28 @@ class SmsmodeChannelTest extends TestCase
                         'from'      => '4444444444',
                     ]
                 ]
+            )
+            ->once();
+
+        $channel->send($notifiable, $notification);
+    }
+
+    public function testSmsIsSentToCorrectEndpoint()
+    {
+        $notification = new NotificationSmsmodeChannelTestNotification;
+        $notifiable = new NotificationSmsmodeChannelTestNotifiable;
+
+        $channel = new SmsmodeChannel(
+            $client = Mockery::mock(HttpClientInterface::class),
+            '4444444444',
+            'https://custom-endpoint.com/api'
+        );
+
+        $client->shouldReceive('request')
+            ->with(
+                'POST',
+                'https://custom-endpoint.com/api/messages',
+                Mockery::any()
             )
             ->once();
 
