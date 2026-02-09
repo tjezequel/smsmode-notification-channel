@@ -31,7 +31,8 @@ class SmsmodeChannelServiceProvider extends ServiceProvider
 
             return new SmsmodeChannel(
                 $client,
-                $app['config']['smsmode.sender']
+                $app['config']['smsmode.sender'],
+                $app['config']['smsmode.endpoint']
             );
         });
 

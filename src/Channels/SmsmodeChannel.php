@@ -9,6 +9,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SmsmodeChannel
 {
+
+    /**
+     * The API endpoint
+     */
+    protected string $endpoint;
+
     /**
      * The HTTP Client
      */
@@ -24,13 +30,15 @@ class SmsmodeChannel
      *
      * @param HttpClientInterface $client
      * @param string              $sender
+     * @param string|null         $endpoint
      *
      * @return void
      */
-    public function __construct(HttpClientInterface $client, string $sender)
+    public function __construct(HttpClientInterface $client, string $sender, string $endpoint)
     {
         $this->client = $client;
         $this->sender = $sender;
+        $this->endpoint = $endpoint;
     }
 
     /**
@@ -92,7 +100,7 @@ class SmsmodeChannel
 
     protected function buildApiUrl(SmsmodeMessage $message): string
     {
-        $url = 'https://rest.smsmode.com/sms/v1';
+        $url = $this->endpoint;
 
         if ($message->campaign && $message->channel) {
             $url .= '/channels/' . $message->channel . '/campaigns/' . $message->campaign;
